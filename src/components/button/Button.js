@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Loading from "../loading/Loading";
 const ButtonStyles = styled.button`
   max-width: 300px;
   width: 100%;
   margin: 0 auto;
+  height: ${(props) => props.height || "66px"};
   padding: 22px 0;
   color: #fff;
   font-weight: 600;
@@ -17,11 +19,17 @@ const ButtonStyles = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 `;
-const Button = ({ type, children, ...props }) => {
+const Button = ({ type = "button", children, ...props }) => {
+  const { isLoading } = props;
+  const child = !!isLoading ? <Loading></Loading> : children;
   return (
     <ButtonStyles type={type} {...props}>
-      {children}
+      {child}
     </ButtonStyles>
   );
 };

@@ -11,16 +11,14 @@ import IconEyesOpen from "../icon/IconEyesOpen";
 import IconEyesClose from "../icon/IconEyesClose";
 import Loading from "../components/loading/Loading";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase-folder/firebase-config";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
-
-const SignUpPageStyle = styled.div`
+import { NavLink, useNavigate } from "react-router-dom";
+const SignInPageStyle = styled.div`
   margin-top: 30px;
 
   .logo {
@@ -29,6 +27,7 @@ const SignUpPageStyle = styled.div`
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 60px;
     }
     &__img {
       max-width: 121px;
@@ -61,7 +60,6 @@ const SignUpPageStyle = styled.div`
 `;
 
 const schemaValidation = yup.object({
-  fullname: yup.string().required("Họ và tên của bạn là gì?"),
   email: yup
     .string()
     .email("Vui lòng điền email có sẵn vào chỗ trống.")
@@ -77,8 +75,9 @@ const schemaValidation = yup.object({
     .required("Vui lòng nhập password"),
 });
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -86,7 +85,7 @@ const SignUpPage = () => {
     watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
-    mode: "obSubmit",
+    mode: "onSubmit",
     resolver: yupResolver(schemaValidation),
   });
   // Tạo state toggle passowrd
@@ -97,23 +96,11 @@ const SignUpPage = () => {
   };
   //End
   // BUTTON PUSH API
-  const handleSignUp = async (values) => {
-    // if (!isValid) return;
-    await createUserWithEmailAndPassword(auth, values.email, values.password);
-    await updateProfile(auth.currentUser, {
-      displayName: values.fullname,
-    });
-    //Gửi dữ liệu lên database
-    const colRef = collection(db, "users");
-    await addDoc(colRef, {
-      fullname: values.fullname,
-      email: values.email,
-      password: values.password,
-    });
-    toast.success("Đăng ký tài khoản thành công!");
+  const handleSignIn = async (values) => {
+    await signInWithEmailAndPassword(auth, values.email, values.password);
+    toast.success("Đăng nhập tài khoản thành công!");
     navigate("/");
   };
-  //
   const { userInfo } = useAuth();
   useEffect(() => {
     document.title = "Login Page";
@@ -127,7 +114,7 @@ const SignUpPage = () => {
   }, [errors]);
 
   return (
-    <SignUpPageStyle>
+    <SignInPageStyle>
       <div className="container">
         <div className="logo">
           <div className="logo__wrapper">
@@ -135,15 +122,7 @@ const SignUpPage = () => {
             <p className="logo__text">Hung Blogging</p>
           </div>
           {/* onSubmit cho Form thông qua handleSubmit trong useForm */}
-          <form className="form" onSubmit={handleSubmit(handleSignUp)}>
-            <Field>
-              <Label htmlFor="fullname">fullname</Label>
-              <Input
-                name="fullname"
-                placeholder="Enter your fullname"
-                control={control}
-              ></Input>
-            </Field>
+          <form className="form" onSubmit={handleSubmit(handleSignIn)}>
             <Field>
               <Label htmlFor="email">Email address</Label>
               <Input
@@ -181,20 +160,20 @@ const SignUpPage = () => {
               </Input>
             </Field>
             <div className="had__account">
-              Bạn đã có tài khoản? <NavLink to={"/sign-in"}>Login</NavLink>
+              Bạn chưa có tài khoản? <NavLink to={"/sign-up"}>Register</NavLink>
             </div>
             <Button
               type="submit"
               disabled={isSubmitting}
               isLoading={isSubmitting}
             >
-              Sign Up
+              Login
             </Button>
           </form>
         </div>
       </div>
-    </SignUpPageStyle>
+    </SignInPageStyle>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
