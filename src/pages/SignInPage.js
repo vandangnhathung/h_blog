@@ -117,10 +117,12 @@ const SignInPage = () => {
     <SignInPageStyle>
       <div className="container">
         <div className="logo">
-          <div className="logo__wrapper">
-            <img src={logo} alt="" className="logo__img" />
-            <p className="logo__text">Hung Blogging</p>
-          </div>
+          <NavLink to="/" className="text-decoration">
+            <div className="logo__wrapper">
+              <img src={logo} alt="" className="logo__img" />
+              <p className="logo__text">Hung Blogging</p>
+            </div>
+          </NavLink>
           {/* onSubmit cho Form thông qua handleSubmit trong useForm */}
           <form className="form" onSubmit={handleSubmit(handleSignIn)}>
             <Field>

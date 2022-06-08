@@ -6,6 +6,8 @@ import IconSearching from "../../icon/IconSearching";
 import logo from "../../images/logo.jpg";
 import Input from "../input/Input";
 import Button from "../button/Button";
+import { useAuth } from "../../contexts/auth-context";
+
 const HeaderStyles = styled.div`
   margin-top: 30px;
   .header-main {
@@ -52,6 +54,8 @@ const HeaderStyles = styled.div`
 `;
 const Header = () => {
   const { control } = useForm();
+  const { userInfo } = useAuth();
+  // console.log(userInfo);
   const headerNavigations = [
     {
       title: "Home",
@@ -70,7 +74,9 @@ const Header = () => {
     <HeaderStyles>
       <div className="container">
         <div className="header-main">
-          <img src={logo} alt="" className="header-img" />
+          <NavLink to={"/"}>
+            <img src={logo} alt="" className="header-img" />
+          </NavLink>
           <ul className="header-navigations">
             {headerNavigations.map((item) => (
               <li className="header-navigation" key={item.title}>
@@ -91,18 +97,26 @@ const Header = () => {
                 <IconSearching className="icon-searching"></IconSearching>
               </Input>
             </div>
-            <Button
-              type="submit"
-              style={{
-                maxWidth: "191px",
-                width: "auto",
-                padding: "10px 25px",
-                fontSize: "18px",
-              }}
-              height="56px"
-            >
-              Sign Up
-            </Button>
+            {!userInfo ? (
+              <Button
+                type="submit"
+                style={{
+                  maxWidth: "191px",
+                  width: "auto",
+                  padding: "10px 25px",
+                  fontSize: "18px",
+                }}
+                height="56px"
+                to={"/sign-up"}
+              >
+                Sign Up
+              </Button>
+            ) : (
+              <div className="header-auth">
+                <strong>Xin chào </strong>
+                <span>{userInfo?.displayName}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -5,6 +5,8 @@ const LabelStyles = styled.label`
   font-weight: 600;
   cursor: pointer;
   text-transform: capitalize;
+  margin-bottom: 10px;
+  display: inline-block;
 `;
 
 const Label = ({ htmlFor = "", children, ...props }) => {

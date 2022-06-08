@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import styled, { css } from "styled-components";
 import Loading from "../loading/Loading";
 const ButtonStyles = styled.button`
   max-width: 300px;
@@ -11,7 +12,19 @@ const ButtonStyles = styled.button`
   font-weight: 600;
   font-size: 24px;
   line-height: calc(36 / 24);
-  background-image: linear-gradient(to right, #00a7b4, #a4d96c);
+  ${(props) =>
+    props.bg === "primary" &&
+    css`
+      background-image: linear-gradient(to right, #00a7b4, #a4d96c);
+    `}
+  ${(props) =>
+    props.bg === "secondary" &&
+    css`
+      color: ${(props) => props.theme.primary};
+      background-color: white;
+      max-width: 250px;
+      padding: 10px 25px;
+    `}
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -24,11 +37,21 @@ const ButtonStyles = styled.button`
     pointer-events: none;
   }
 `;
-const Button = ({ type = "button", children, ...props }) => {
-  const { isLoading } = props;
+
+const Button = ({ type = "submit", children, bg = "primary", ...props }) => {
+  const { isLoading, to } = props;
   const child = !!isLoading ? <Loading></Loading> : children;
+  if (to !== "" && typeof to === "string") {
+    return (
+      <NavLink to={to} className="text-decoration banner-nav__styles">
+        <ButtonStyles bg={bg} type={type} {...props}>
+          {child}
+        </ButtonStyles>
+      </NavLink>
+    );
+  }
   return (
-    <ButtonStyles type={type} {...props}>
+    <ButtonStyles bg={bg} type={type} {...props}>
       {child}
     </ButtonStyles>
   );
