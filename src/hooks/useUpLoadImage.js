@@ -14,10 +14,11 @@ export default function useUpLoadImage({
 }) {
   const [progress, setProgress] = useState(0);
   const [imageAPI, setImageAPI] = useState("");
+  if (!setValue || !getValues) return;
   //Upload image function
   const handleUploadImage = (file) => {
     const storage = getStorage(); //Get data from storage in firebase
-    const storageRef = ref(storage, "images/" + file.name);
+    const storageRef = ref(storage, "pictures/" + file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(
@@ -54,7 +55,7 @@ export default function useUpLoadImage({
   const handleSelectImage = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setValue("imageAPI", file.name);
+    setValue("image_name", file.name);
     handleUploadImage(file);
   };
 
@@ -66,7 +67,7 @@ export default function useUpLoadImage({
     // Create a reference to the file to delete
     const imageRef = ref(
       storage,
-      "images/" + (imageName || getValues("imageAPI"))
+      "pictures/" + (imageName || getValues("image_name"))
     );
 
     // Delete the file
@@ -78,6 +79,7 @@ export default function useUpLoadImage({
       })
       .catch((error) => {
         console.log(error);
+        setImageAPI("");
       });
   };
   //
@@ -86,6 +88,8 @@ export default function useUpLoadImage({
     handleDeleteImage,
     progress,
     imageAPI,
+    setImageAPI,
+    setProgress,
     setImageAPI,
   };
 }

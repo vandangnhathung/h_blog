@@ -11,7 +11,7 @@ import IconEyesOpen from "../icon/IconEyesOpen";
 import IconEyesClose from "../icon/IconEyesClose";
 import Loading from "../components/loading/Loading";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase-folder/firebase-config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -104,11 +104,13 @@ const SignUpPage = () => {
       displayName: values.fullname,
     });
     //Gửi dữ liệu lên database
-    const colRef = collection(db, "users");
-    await addDoc(colRef, {
-      fullname: values.fullname,
-      email: values.email,
-      password: values.password,
+    // await addDoc(colRef, {
+    //   fullname: values.fullname,
+    //   email: values.email,
+    //   password: values.password,
+    // });
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      ...values,
     });
     toast.success("Đăng ký tài khoản thành công!");
     navigate("/");

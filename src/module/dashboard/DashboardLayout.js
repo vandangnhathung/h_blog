@@ -5,6 +5,8 @@ import DashboardHeader from "./DashboardHeader";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardItem from "./DashboardItem";
 import { ActiveDashboardProvider } from "../../contexts/activeItemDashboardContext";
+import Error404Page from "../../pages/Error404Page";
+import { useAuth } from "../../contexts/auth-context";
 const DashboardLayoutStyles = styled.div`
   font-family: "Montserrat", sans-serif;
 
@@ -19,6 +21,8 @@ const DashboardLayoutStyles = styled.div`
 `;
 
 const DashboardLayout = () => {
+  const { userInfo } = useAuth();
+  if (!userInfo) return <Error404Page></Error404Page>;
   return (
     <ActiveDashboardProvider>
       <DashboardLayoutStyles>
