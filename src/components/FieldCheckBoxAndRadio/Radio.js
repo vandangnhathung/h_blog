@@ -3,6 +3,7 @@ import { useController } from "react-hook-form";
 
 const Radio = ({ checked, control, children, name, ...rest }) => {
   const { field } = useController({ control, name, defaultValue: "" });
+  // console.log(field);
   return (
     <label>
       <input

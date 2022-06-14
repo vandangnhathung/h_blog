@@ -93,8 +93,11 @@ const PostFeatureItem = ({ data }) => {
       setCategory(dataSingle.data());
     })();
   }, [data.categoryId]);
-
-  console.log(category);
+  //Get DATE
+  const date = new Date(data.createdAt.seconds * 1000).toLocaleDateString(
+    "vi-VI"
+  );
+  //------------------
   return (
     <PostFeatureItemStyles>
       <div className="overlay"></div>
@@ -103,7 +106,7 @@ const PostFeatureItem = ({ data }) => {
         <div className="post-top">
           <Category to={category?.slug}>{category?.name}</Category>
           <div className="post-right">
-            <p className="post-date">Mar 23</p>
+            <p className="post-date">{date}</p>
             <span className="post-author">{user?.fullname}</span>
           </div>
         </div>

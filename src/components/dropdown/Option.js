@@ -12,7 +12,7 @@ const Option = ({ children, onClick }) => {
     <>
       <li
         onClick={handleClick}
-        className={`p-4 border-b border-white cursor-pointer transition-all bg-[#e7ecf3]`}
+        className={`p-4 border-b border-white cursor-pointer transition-all bg-[#e7ecf3] hover:bg-[#fff]`}
       >
         {children}
       </li>

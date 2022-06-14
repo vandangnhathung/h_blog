@@ -8,7 +8,11 @@ import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import Error404Page from "./pages/Error404Page";
-
+import CategoryManage from "./module/category/CategoryManage";
+import AddCategory from "./module/category/AddCategory";
+import UserProfile from "./module/user/UserProfile";
+import UserManage from "./module/user/UserManage";
+import UpdateCategory from "./module/category/UpdateCategory";
 function App() {
   return (
     <div>
@@ -31,10 +35,26 @@ function App() {
               path="/manage/add-post"
               element={<AddPost></AddPost>}
             ></Route>
-            {/* <Route
-              path="/post"
-              element={<DashboardPost></DashboardPost>}
-            ></Route> */}
+            <Route
+              path="/manage/category"
+              element={<CategoryManage></CategoryManage>}
+            ></Route>
+            <Route
+              path="/manage/add-category"
+              element={<AddCategory></AddCategory>}
+            ></Route>{" "}
+            <Route
+              path="/manage/update-category"
+              element={<UpdateCategory></UpdateCategory>}
+            ></Route>{" "}
+            <Route
+              path="/manage/user"
+              element={<UserManage></UserManage>}
+            ></Route>
+            <Route
+              path="/manage/user-profile"
+              element={<UserProfile></UserProfile>}
+            ></Route>
           </Route>
         </Routes>
       </AuthProvider>

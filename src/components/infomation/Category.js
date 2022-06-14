@@ -13,7 +13,7 @@ const Category = ({ children, to = "/", ...props }) => {
   const { type } = props;
   return (
     <NavLink to={to}>
-      <CategoryStyled type={type}>{children}</CategoryStyled>;
+      <CategoryStyled type={type}>{children}</CategoryStyled>
     </NavLink>
   );
 };

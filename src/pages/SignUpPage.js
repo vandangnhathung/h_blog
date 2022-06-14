@@ -11,7 +11,13 @@ import IconEyesOpen from "../icon/IconEyesOpen";
 import IconEyesClose from "../icon/IconEyesClose";
 import Loading from "../components/loading/Loading";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { auth, db } from "../firebase-folder/firebase-config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,6 +25,7 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import slugify from "slugify";
 
 const SignUpPageStyle = styled.div`
   margin-top: 30px;
@@ -102,7 +109,10 @@ const SignUpPage = () => {
     await createUserWithEmailAndPassword(auth, values.email, values.password);
     await updateProfile(auth.currentUser, {
       displayName: values.fullname,
+      photoURL:
+        "https://images.unsplash.com/photo-1655185495448-5317953167b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
     });
+    console.log(auth.currentUser);
     //Gửi dữ liệu lên database
     // await addDoc(colRef, {
     //   fullname: values.fullname,
@@ -111,6 +121,10 @@ const SignUpPage = () => {
     // });
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       ...values,
+      username: slugify(values.fullname, { lower: true }),
+      createdAt: serverTimestamp(),
+      avatar:
+        "https://images.unsplash.com/photo-1655185495448-5317953167b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
     });
     toast.success("Đăng ký tài khoản thành công!");
     navigate("/");

@@ -68,7 +68,7 @@ const AddPost = () => {
     try {
       setLoading(true);
       const slugifyConvert = slugify(values.title || values.slug, {
-        lower: false,
+        lower: true,
       });
       const statusConvert = Number(values.status);
       const colRef = collection(db, "posts");
@@ -125,7 +125,7 @@ const AddPost = () => {
 
   return (
     <AddPostStyles>
-      <DashboardHeading>Add new post</DashboardHeading>
+      <DashboardHeading title="Add new post"></DashboardHeading>
       <div className="add-post-main">
         <form onSubmit={handleSubmit(addNewPost)}>
           <div className="add-post-form">

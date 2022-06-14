@@ -1,13 +1,20 @@
 import React from "react";
 import dog from "../images/dog.png";
 const UploadImage = ({
+  type = "default",
   progress = 0,
   imageAPI = "",
   handleDeleteImage = () => {},
   ...props
 }) => {
   return (
-    <label className="min-h-[300px] bg-slate-200 border  border-dashed rounded-lg flex items-center justify-center cursor-pointer relative label-image z-0 transition-all group">
+    <label
+      className={`min-h-[300px] ${
+        type === "default" && "bg-slate-200  border"
+      } ${
+        type === "userProfile" && "border-2"
+      }   border-dashed  flex items-center rounded-lg justify-center cursor-pointer relative label-image z-0 transition-all group`}
+    >
       <input
         type="file"
         className="hidden-input"
